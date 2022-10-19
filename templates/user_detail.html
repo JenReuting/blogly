@@ -8,7 +8,10 @@
 </div>
 <div>{{ user.first_name }} {{ user.last_name }}</div>
 <div>
-  <button>Edit</button>
-  <button>Delete</button>
+  <form>
+    <button formmethod="GET" formaction="/users/{{user.id}}/edit">Edit</button>
+    <button formmethod="POST" formaction="">Delete</button>
+  </form>
+
 </div>
 {% endblock %}

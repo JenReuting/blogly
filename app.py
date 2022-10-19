@@ -56,3 +56,27 @@ def get_user_detail(user_id):
     user = User.query.get_or_404(user_id)
 
     return render_template('user_detail.html', user=user)
+
+@app.get('/users/<int:user_id>/edit')
+def get_user_edit(user_id):
+    """User Edit page"""
+
+    user = User.query.get_or_404(user_id)
+
+    # cancel button --> returns to user_detail.html
+    # save button --> updates user
+    return render_template("user_edit.html", user=user)
+
+@app.post('/users/<int:user_id>/edit')
+def edit_user(user_id):
+    """Process user data changes"""
+
+    user = User.query.get_or_404(user_id)
+
+    user.first_name = request.form.get('first-name')
+    user.last_name = request.form.get('last-name')
+    user.image_url = request.form.get('image-url')
+
+    db.session.commit()
+
+    return redirect('/users')
