@@ -9,9 +9,12 @@
 <div>{{ user.first_name }} {{ user.last_name }}</div>
 <div>
   <form>
-    <button formmethod="GET" formaction="/users/{{user.id}}/edit">Edit</button>
-    <button formmethod="POST" formaction="">Delete</button>
+    <button formmethod="GET" formaction="/users/{{ user.id }}/edit">
+      Edit
+    </button>
+    <button formmethod="POST" formaction="/users/{{ user.id }}/delete">
+      Delete
+    </button>
   </form>
-
 </div>
 {% endblock %}

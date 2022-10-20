@@ -1,6 +1,10 @@
 {% extends 'base.html' %} {% block title %}Users {% endblock %} {% block content
 %}
 
+<!-- This is the user list  DO NOT CHANGE, FOR TESTING -->
+
+<h1>User List</h1>
+
 <ul>
   {% for user in users|sort(attribute='last_name') %}
   <li>
@@ -11,5 +15,9 @@
 
   {% endfor %}
 </ul>
+
+<form>
+  <button formmethod="GET" formaction="/users/new">Add</button>
+</form>
 
 {% endblock %}

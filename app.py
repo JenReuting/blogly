@@ -80,3 +80,14 @@ def edit_user(user_id):
     db.session.commit()
 
     return redirect('/users')
+
+@app.post('/users/<int:user_id>/delete')
+def delete_user(user_id):
+    """Delete the user"""
+
+    user = User.query.get_or_404(user_id)
+
+    db.session.delete(user)
+    db.session.commit()
+
+    return redirect('/')
