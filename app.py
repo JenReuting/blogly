@@ -1,7 +1,7 @@
 """Blogly application."""
 
 from flask import Flask, render_template, request, redirect
-from models import db, connect_db, User
+from models import db, connect_db, User, Post
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///blogly'
@@ -18,7 +18,7 @@ debug = DebugToolbarExtension(app)
 
 @app.get("/")
 def go_home():
-    "Home page that displays all users"
+    """Home page that displays all users redirect""" 
 
     return redirect("/users")
 
@@ -26,7 +26,7 @@ def go_home():
 def get_users():
     """Get list of users"""
 
-    users = User.query.all()
+    users = User.query.all() #order by
 
     return render_template('users_list.html', users=users)
 
@@ -56,7 +56,10 @@ def get_user_detail(user_id):
 
     user = User.query.get_or_404(user_id)
 
-    return render_template('user_detail.html', user=user)
+    # posts for the current user
+    posts = Post.query.filter_by(user_id = user_id).order_by(Post.created_at).all()
+
+    return render_template('user_detail.html', user=user, posts=posts)
 
 @app.get('/users/<int:user_id>/edit')
 def get_user_edit(user_id):
@@ -92,3 +95,25 @@ def delete_user(user_id):
     db.session.commit()
 
     return redirect('/')
+
+
+@app.get('/users/<int:user_id>/posts/new')
+def get_add_post_form(user_id):
+    """Return the add post form"""
+
+    return render_template("add_post.html", user_id=user_id)
+
+
+@app.post('/users/<int:user_id>/posts/new')
+def add_post(user_id):
+    """Add the post to db and return to user detail page"""
+
+    title = request.form.get("title")
+    content = request.form.get("content")
+
+    post = Post(user_id=user_id, title=title, content=content)
+
+    db.session.add(post)
+    db.session.commit()
+
+    return redirect(f'/users/{user_id}')

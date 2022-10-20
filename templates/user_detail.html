@@ -15,6 +15,17 @@
     <button formmethod="POST" formaction="/users/{{ user.id }}/delete">
       Delete
     </button>
+    <button formmethod="GET" formaction="/users/{{ user.id }}/posts/new">
+      Add Post
+    </button>
   </form>
+</div>
+<div>
+  <h1>{{ user.first_name + " " + user.last_name }}'s Posts</h1>
+  <ul>
+    {% for post in posts %}
+    <li>{{ post.title }}</li>
+    {% endfor %}
+  </ul>
 </div>
 {% endblock %}

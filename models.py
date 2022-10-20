@@ -3,6 +3,8 @@ from flask_sqlalchemy import SQLAlchemy
 
 db = SQLAlchemy()
 
+from datetime import datetime
+
 
 def connect_db(app):
     """Connect to database."""
@@ -19,11 +21,8 @@ class User(db.Model):
     __tablename__ = "users"
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-
     first_name = db.Column(db.String(50), nullable=False)
-
     last_name = db.Column(db.String(50), nullable=False)
-
     image_url = db.Column(db.String(1000), nullable=True)
 
     def __repr__(self):
@@ -36,3 +35,25 @@ class User(db.Model):
     # @classmethod
     # def create_user():
     #     db.session.add()
+
+class Post(db.Model):
+
+    """ Post """
+
+    __tablename__ = 'posts'
+
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    title = db.Column(db.String(50), nullable=False)
+    content = db.Column(db.Text, nullable=False)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+
+    def __repr__(self):
+        """Show post id, title, created_at"""
+        return f"""
+                <Post
+                {self.id}
+                {self.title}
+                {self.created_at}
+                >
+                """

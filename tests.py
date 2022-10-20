@@ -1,7 +1,7 @@
 from unittest import TestCase
 
 from app import app, db
-from models import User
+from models import User, connect_db
 # from models import DEFAULT_IMAGE_URL, User
 
 # Let's configure our app to use a different database for tests
@@ -17,6 +17,7 @@ app.config['DEBUG_TB_HOSTS'] = ['dont-show-debug-toolbar']
 # once for all tests --- in each test, we'll delete the data
 # and create fresh new clean test data
 
+connect_db(app)
 db.create_all()
 
 
@@ -99,11 +100,11 @@ class UserViewTestCase(TestCase):
             users = User.query.filter_by(first_name = "Jennifer").all()
             self.assertEqual(len(users), 1)
             # test that this newly created user is not in the db
-            users = User.query.filter_by(first_name = "Jenniferzdadsasf").all()
-            self.assertNotEqual(len(users), 1)
-            # test thatt some random user does not exist in the db
-            fake_users = User.query.filter_by(first_name = "Elon").all()
-            self.assertNotEqual(len(fake_users), 1)
+            # users = User.query.filter_by(first_name = "Jenniferzdadsasf").all()
+            # self.assertNotEqual(len(users), 1)
+            # # test thatt some random user does not exist in the db
+            # fake_users = User.query.filter_by(first_name = "Elon").all()
+            # self.assertNotEqual(len(fake_users), 1)
 
 
     def test_edit_user(self):
@@ -142,7 +143,10 @@ class UserViewTestCase(TestCase):
             test_user = users[0]
             test_user_id = test_user.id
 
-            c.post(f'/users/{test_user_id}/delete', follow_redirects=True)
+            resp = c.post(f'/users/{test_user_id}/delete', follow_redirects=True)
+
+            # check for redirect
+            
 
             # check user not in db
             users = User.query.filter_by(first_name = "test_first").all()
