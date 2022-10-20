@@ -24,12 +24,14 @@ class User(db.Model):
     first_name = db.Column(db.String(50), nullable=False)
     last_name = db.Column(db.String(50), nullable=False)
     image_url = db.Column(db.String(1000), nullable=True)
+    posts = db.relationship('Post', backref='user')
+
 
     def __repr__(self):
         """Show user id, first_name, last_name"""
-        return f"""<User 
+        return f"""<User
                 id={self.id} first_
-                name={self.first_name} 
+                name={self.first_name}
                 last_name={self.last_name}>"""
 
     # @classmethod
@@ -47,6 +49,8 @@ class Post(db.Model):
     content = db.Column(db.Text, nullable=False)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    # user = db.relationship('User', backref='user_posts')
+
 
     def __repr__(self):
         """Show post id, title, created_at"""

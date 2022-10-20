@@ -18,7 +18,7 @@ debug = DebugToolbarExtension(app)
 
 @app.get("/")
 def go_home():
-    """Home page that displays all users redirect""" 
+    """Home page that displays all users redirect"""
 
     return redirect("/users")
 
@@ -117,3 +117,50 @@ def add_post(user_id):
     db.session.commit()
 
     return redirect(f'/users/{user_id}')
+
+
+@app.get('/posts/<int:post_id>')
+def show_post(post_id):
+    """ Show the post detail page """
+
+    post = Post.query.get_or_404(post_id)
+
+    return render_template('post_detail.html', post=post)
+
+
+@app.post('/posts/<int:post_id>/delete')
+def delete_(post_id):
+    """Delete the post"""
+
+    post = Post.query.get_or_404(post_id)
+
+    db.session.delete(post)
+    db.session.commit()
+
+    return redirect(f'/users')
+
+@app.get('/posts/<int:post_id>/edit')
+def get_post_edit(post_id):
+    """Post Edit page"""
+
+    post = Post.query.get_or_404(post_id)
+
+    # cancel button --> returns to post_detail.html
+    # save button --> updates post
+    return render_template("post_edit.html", post=post)
+
+@app.post('/posts/<int:post_id>/edit')
+def edit_post(post_id):
+    """Process post data changes"""
+
+    post = Post.query.get_or_404(post_id)
+
+    post.title = request.form['title']
+    post.content = request.form['content']
+
+    print(f'$$$$$$$$$----------------->>> {post}')
+
+    db.session.commit()
+
+    return redirect(f'/posts/{post_id}')
+

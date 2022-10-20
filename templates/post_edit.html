@@ -1,0 +1,15 @@
+{% extends 'base.html' %} {% block content %}
+
+<h1>Edit Your Post</h1>
+
+<form>
+  <label for="title">Title</label>
+  <input name="title" value="{{ post.title }}" />
+  <label for="content">Content</label>
+  <input name="content" value="{{ post.content }}"/>
+  <button formaction="">Cancel</button>
+  <button formaction="/posts/{{ post.id }}/edit" formmethod="POST">Edit Post</button>
+
+</form>
+
+{% endblock %}

@@ -24,7 +24,7 @@
   <h1>{{ user.first_name + " " + user.last_name }}'s Posts</h1>
   <ul>
     {% for post in posts %}
-    <li>{{ post.title }}</li>
+    <li><a href="/posts/{{ post.id }}">{{ post.title }}</a></li>
     {% endfor %}
   </ul>
 </div>
