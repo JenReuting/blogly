@@ -44,6 +44,7 @@ def add_user_to_db():
     image_url = request.form.get('image-url')
 
     user = User(first_name=first_name, last_name=last_name, image_url=image_url)
+
     db.session.add(user)
     db.session.commit()
 

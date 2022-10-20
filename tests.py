@@ -82,3 +82,25 @@ class UserViewTestCase(TestCase):
             self.assertEqual(resp.status_code, 200)
             html = resp.get_data(as_text=True)
             self.assertIn("user list  DO NOT CHANGE, FOR TESTING", html)
+
+    def test_add_user(self):
+        """Verify that add user works correctly"""
+        with self.client as c:
+            resp = c.post('/users/new',
+                data={"first-name": 'Jennifer',
+                    "last-name": 'Gates',
+                    "image-url": 'https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/fb-master-template-2-47-1659701917.jpg'},
+                    follow_redirects=True)
+
+            # html = resp.get_data(as_text=True)
+
+            html = resp.get_data(as_text=True)
+
+            print(f'<<<<<<<_____________########  {html}')
+
+            self.assertIn("Jennifer Gates", html)
+
+            # db.session.delete(test_user)
+            # db.session.commit()
+
+
