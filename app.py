@@ -38,9 +38,9 @@ def show_new_user_form():
 
 @app.post('/users/new')
 def add_user_to_db():
-    """Add the user to the database"""
+    """Add the user to the database""" #redirects to users
     first_name = request.form.get('first-name')
-    last_name = request.form.get('last-name')
+    last_name = request.form.get('last-name') #use square brackets!!!!!!!
     image_url = request.form.get('image-url')
 
     user = User(first_name=first_name, last_name=last_name, image_url=image_url)
